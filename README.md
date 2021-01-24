@@ -1,28 +1,36 @@
 # ClientWars
 
-## War game, but for programmars.
+#### War game, but for programmers.
 
 
-Python Libary for playing in ServerWars Game.
+Python Library for playing in ServerWars Game.
 
-## Setup
-
-```shell
+### Install
+```shell script
 pip3 install clients_wars
 ```
 
-# Example code:
+### Example code:
 ```python
-print("Hello")
-print("Hello")
-print("Hello")
-print("Hello")
-print("Hello")
+from game import Game
+
+game = Game("34f97bfd-8547-4977-827e-cd82cbeeeb4c")
+
+def turn(game):
+    conquers = game.conquerable_tiles()
+
+    if not conquers:
+        print("No conquers")
+        return  # Here you can move reinforcements to the outside tiles for example
+
+    game.move(conquers[0][1], conquers[0][0])
+    print("Conquer", conquers[0][0])
+
+game.set_turn_method(turn)
+game.run()
 ```
 
-## Usage
+### Usage
 ```
-python3 main.py 
+python3 your_code.py
 ```
-It will create new session file called `config.ini` which will holds your player data.
-## The source code for the server is [here](https://google.com)
