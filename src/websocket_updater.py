@@ -19,13 +19,17 @@ class MapUpdater(Thread):
             on_open=self.on_open
           )
         self.map = map
+        self._close = False
 
     def run(self):
         logger.info("Starting MapUpdater... (for getting map updates)")
-        self.websocket.run_forever()
+        while not self._close:
+            self.websocket.run_forever()
+            sleep(1)
 
     def close(self):
         logger.info("Closing MapUpdater...")
+        self._close = True
         self.websocket.close()
 
     def on_message(self, message):
@@ -40,5 +44,3 @@ class MapUpdater(Thread):
 
     def on_open(self, *args, **kwargs):
         logger.debug("MapUpdater Started")
-        while False:
-            sleep(10)

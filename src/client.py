@@ -1,4 +1,5 @@
-from requests import Session, Response
+from functools import wraps
+from requests import Session, Response, ConnectionError
 from loguru import logger
 from time import sleep
 
@@ -7,13 +8,19 @@ SERVER_URL = "http://127.0.0.1:8000"
 
 
 def check_status(func):
-    def wrapper(*args, **kwargs):
+    @wraps(func)
+    def wrapper(*args, **kwargs) -> dict:
         while True:
-            res: Response = func(*args, **kwargs)
+            try:
+                res: Response = func(*args, **kwargs)
+            except ConnectionError as CE:
+                logger.error(CE)
+                sleep(1)
+                continue
             if res.status_code != 200:
                 if "X-TIME" in res.headers:
                     logger.debug(res.json()['detail'])
-                    sleep(float(res.headers["X-TIME"]))
+                    sleep(float(res.headers["X-TIME"]) + 1)
                     continue
                 raise ValueError(res.json()["detail"])
             return res.json()
@@ -54,6 +61,6 @@ class Client:
         return response
 
     @check_status
-    def me(self) -> Response:
+    def me(self):
         args = {"token": self.token}
         return self.session.get(SERVER_URL + "/me", params=args)

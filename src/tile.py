@@ -11,7 +11,7 @@ class Tile:
     y: int
     _power: int
     owner: Union[None, str]
-    downloaded_at: datetime = datetime.now()
+    _updated_at: Union[datetime, None] = None
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -20,7 +20,7 @@ class Tile:
     def power(self):
         if self.owner is None:
             return self._power
-        return self._power + (datetime.now() - self.downloaded_at) // NEW_POWER_RATE
+        return self._power + (datetime.now() - self._updated_at) // NEW_POWER_RATE
 
     def coordinates(self) -> str:
         return self.x, self.y
@@ -37,16 +37,6 @@ class Tile:
     def down(self):
         return self.x, self.y - 1
 
-    @classmethod
-    def from_dict(cls, dictt):
-        dictt["_power"] = dictt["power"]
-        dictt.pop("power")
-        return cls(**dictt)
-
-    @classmethod
-    def from_dicts_to_tiles(cls, dicts):
-        return [cls.from_dict(item) for item in dicts]
-
     def __eq__(self, other):
         return self.power == other.power
 
@@ -61,3 +51,16 @@ class Tile:
 
     def __repr__(self):
         return str(self)
+
+    @classmethod
+    def from_dict(cls, dictt):
+        dictt["_power"] = dictt["power"]
+        if "updated_at" in dictt:
+            dictt["_updated_at"] = datetime.fromtimestamp(dictt["updated_at"])
+            dictt.pop("updated_at")
+        dictt.pop("power")
+        return cls(**dictt)
+
+    @classmethod
+    def from_dicts_to_tiles(cls, dicts):
+        return [cls.from_dict(item) for item in dicts]

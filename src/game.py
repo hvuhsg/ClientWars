@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List, Callable, Union, Tuple
 from loguru import logger
 from time import sleep
 
@@ -6,6 +6,10 @@ from client import Client
 from map import Map
 from tile import Tile
 from websocket_updater import MapUpdater
+
+
+TileList = List[Tile]
+TileTuple = Tuple[Tile]
 
 
 class Game:
@@ -32,7 +36,7 @@ class Game:
 
         tile_objects = []
         for my_tile in self.my["tiles"]:
-            tile_object = self.map.get((my_tile["x"], my_tile["y"]), None)
+            tile_object = self.map.get((my_tile["x"], my_tile["y"]))
             tile_objects.append(tile_object)
         self.my = self.map.players_on_map[self.my["player"]["name"]]
         self.my.spawn_point = spawn_point
@@ -43,13 +47,13 @@ class Game:
             raise TypeError("Turn method mast be callable.")
         self.play = turn_method
 
-    def move(self, src: Tile, dst: Tile, power=None):
+    def move(self, src: Tile, dst: Tile, power: Union[int, None] = None):
         self._client.move(src.x, src.y, dst.x, dst.y, power)
 
     def weakest_tile(self):
         return min(self.attackable_tiles())
 
-    def touching_tiles(self, tile: Tile) -> List[Tile]:
+    def neighbors(self, tile: Tile) -> TileTuple:
         return (
             self.map.get(tile.left()),
             self.map.get(tile.right()),
@@ -57,49 +61,25 @@ class Game:
             self.map.get(tile.down())
         )
 
-    def touching_ally(self, tile: Tile):
-        return list(filter(lambda tilex: tilex.owner == self.my.name, self.touching_tiles(tile)))
+    def touching_ally(self, tile: Tile) -> TileList:
+        return list(filter(lambda tilex: tilex.owner == tile.owner, self.neighbors(tile)))
 
-    def attackable_tiles(self):
+    def attackable_tiles(self) -> TileList:
         attackables = []
         for tile in self.my.tiles():
-            left = self.map.get(tile.left())
-            up = self.map.get(tile.up())
-            right = self.map.get(tile.right())
-            down = self.map.get(tile.down())
+            neighbors = self.neighbors(tile)
+            for neighbor in neighbors:
+                if neighbor.owner != self.my.name:
+                    attackables.append(neighbor)
 
-            if left and not left.owner:
-                attackables.append(left)
-            if down and not down.owner:
-                attackables.append(down)
-            if up and not up.owner:
-                attackables.append(up)
-            if right and not right.owner:
-                attackables.append(right)
         return attackables
 
-    def neighbors(self, tile):
-        response = []
-        left = self.map.get(tile.left())
-        if left:
-            response.append(left)
-        right = self.map.get(tile.right())
-        if right:
-            response.append(right)
-        up = self.map.get(tile.up())
-        if up:
-            response.append(up)
-        down = self.map.get(tile.down())
-        if down:
-            response.append(down)
-        return tuple(response)
-
-    def conquerable_tiles(self):
+    def conquerable_tiles(self) -> TileList:
         conquerables = []
         for tile in self.attackable_tiles():
             for neighbor in self.neighbors(tile):
                 if neighbor.owner == self.my.name and neighbor > tile:
-                    conquerables.append((tile, neighbor))
+                    conquerables.append((neighbor, tile))
                     break
         return conquerables
 
