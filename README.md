@@ -41,3 +41,7 @@ game.run()
 ```
 python3 your_code.py
 ```
+
+### [Wiki](https://github.com/hvuhsg/ClientWars/wiki)
+
+
