@@ -41,6 +41,7 @@ class Game:
         self.my = self.map.players_on_map[self.my["player"]["name"]]
         self.my.spawn_point = spawn_point
         logger.info("End game setup.")
+        logger.success(f"For GUI view of the game map goto {self._client.link_to_gui_map()}")
 
     def set_turn_method(self, turn_method):
         if not callable(turn_method):

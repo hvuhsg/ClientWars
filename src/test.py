@@ -6,7 +6,7 @@ game = Game("65b2c230-5ee0-4344-a1b8-4bb500546534")
 def turn(game):
     conquers = game.conquerable_tiles()
     """
-    You'r tile has more power then the enemy tile
+    The method conquerable_tiles return's list of per of neighbors tiles when your tile has more power
     >>> conquers
     >>> [(your_tile, enemy_tile), ...]
     """

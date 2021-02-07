@@ -64,3 +64,8 @@ class Client:
     def me(self):
         args = {"token": self.token}
         return self.session.get(SERVER_URL + "/me", params=args)
+
+    def link_to_gui_map(self):
+        args = {"token": self.token}
+        response = self.session.get(SERVER_URL + f"/guiMap", params=args)
+        return response.url
