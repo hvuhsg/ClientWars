@@ -7,7 +7,7 @@ Python Library for playing in ServerWars Game.
 
 ### Install
 ```shell script
-pip3 install clients_wars
+pip3 install -U clients_wars
 ```
 
 ### Example code:
