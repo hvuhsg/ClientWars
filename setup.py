@@ -6,7 +6,7 @@ with open('requirements.txt', 'r') as f:
     requirements = f.read().splitlines()
 setup(
     name="ClientWars",
-    packages=["ClientWars"],
+    packages=["client_wars"],
     include_package_data=True,
     version="v1.0",
     license="MIT",
