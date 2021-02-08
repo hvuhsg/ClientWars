@@ -42,6 +42,7 @@ class Game:
         self.my.spawn_point = spawn_point
         logger.info("End game setup.")
         logger.success(f"For GUI view of the game map goto {self._client.link_to_gui_map()}")
+        logger.warning("Do not share this link is't contain you'r secret token!")
 
     def set_turn_method(self, turn_method):
         if not callable(turn_method):
