@@ -3,10 +3,11 @@ from requests import Session, Response, ConnectionError
 from loguru import logger
 from time import sleep
 
-from .config import GAME_HOST
+from .config import GAME_HOST, SECURE_CONNECTION
 
 
-GAME_HOST = "https://" + GAME_HOST
+protocol = "https" if SECURE_CONNECTION else "http"
+GAME_HOST = f"{protocol}://" + GAME_HOST
 
 
 def check_status(func):

@@ -5,16 +5,17 @@ from json import loads
 from loguru import logger
 
 from .tile import Tile
-from .config import GAME_HOST
+from .config import GAME_HOST, SECURE_CONNECTION
 
 
 class MapUpdater(Thread):
     def __init__(self, token, map, client_id):
         super().__init__()
         enableTrace(False)
-        logger.info(f"wss://{GAME_HOST}/ws?token={token}&client_id={client_id}")
+        protocol = "wss" if SECURE_CONNECTION else "ws"
+        ws_url = f"{protocol}://{GAME_HOST}/ws?token={token}&client_id={client_id}"
         self.websocket = WebSocketApp(
-            f"wss://{GAME_HOST}/ws?token={token}&client_id={client_id}",
+            ws_url,
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close,

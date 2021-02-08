@@ -21,6 +21,7 @@ class Game:
         self.map_updater = MapUpdater(token, self.map, self.client_id)
         self.my = None
         self.time_per_move = None  # Seconds
+        self.moves_per_turn = None
         self.started: bool = None
         self.play: Callable = None
         self._setup()
@@ -31,6 +32,7 @@ class Game:
 
         self.my = self._client.me()
         self.time_per_move = self.my["game"]["time_per_move"]
+        self.moves_per_turn = self.my["game"]["moves_per_turn"]
         self.started = self.my["game"]["started"]
         spawn_point = self.my["player"]["spawn_point"]
 
@@ -42,7 +44,7 @@ class Game:
         self.my.spawn_point = spawn_point
         logger.info("End game setup.")
         logger.success(f"For GUI view of the game map goto {self._client.link_to_gui_map()}")
-        logger.warning("Do not share this link is't contain you'r secret token!")
+        logger.warning("Do not share this link it's contain you'r secret token!")
 
     def set_turn_method(self, turn_method):
         if not callable(turn_method):
@@ -91,4 +93,4 @@ class Game:
                 self.play(self)
             except ValueError as VE:
                 print(VE)
-            sleep(self.time_per_move*2 - 1)
+            sleep(self.time_per_move / self.moves_per_turn / 2)
