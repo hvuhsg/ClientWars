@@ -2,9 +2,14 @@ from functools import wraps
 from requests import Session, Response, ConnectionError
 from loguru import logger
 from time import sleep
+from config import GAME_HOST
 
 
-SERVER_URL = "http://127.0.0.1:8000"
+
+
+
+
+GAME_HOST = "https://" + GAME_HOST
 
 
 def check_status(func):
@@ -32,7 +37,7 @@ class Client:
         self.token = token
         self.client_id = client_id
         self.session = Session()
-        logger.info(f"Start session to game server at {SERVER_URL}")
+        logger.info(f"Start session to game server at {GAME_HOST}")
 
     @check_status
     def load_map(self, x: int, y: int, chunk_size: int) -> Response:
@@ -43,7 +48,7 @@ class Client:
             "token": self.token,
             "client_id": self.client_id,
         }
-        return self.session.get(SERVER_URL + "/map", params=args)
+        return self.session.get(GAME_HOST + "/map", params=args)
 
     @check_status
     def move(self, src_x: int, src_y: int, dst_x: int, dst_y: int, power: int = None) -> Response:
@@ -57,15 +62,15 @@ class Client:
         }
         if not power:
             args.pop("power")
-        response = self.session.post(SERVER_URL + "/move", params=args)
+        response = self.session.post(GAME_HOST + "/move", params=args)
         return response
 
     @check_status
     def me(self):
         args = {"token": self.token}
-        return self.session.get(SERVER_URL + "/me", params=args)
+        return self.session.get(GAME_HOST + "/me", params=args)
 
     def link_to_gui_map(self):
         args = {"token": self.token}
-        response = self.session.get(SERVER_URL + f"/guiMap", params=args)
+        response = self.session.get(GAME_HOST + f"/guiMap", params=args)
         return response.url
