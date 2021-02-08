@@ -1,6 +1,6 @@
-from ClientWars import Game
+from client_wars import Game
 
-game = Game("65b2c230-5ee0-4344-a1b8-4bb500546534")
+game = Game("<TOKEN>")
 
 
 def turn(game):
