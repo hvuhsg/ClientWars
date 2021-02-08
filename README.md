@@ -12,7 +12,7 @@ pip3 install -U ClientWars
 
 ### Example code:
 ```python
-from ClientWars import Game
+from client_wars import Game
 
 game = Game("<TOKEN>")
 

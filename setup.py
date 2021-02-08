@@ -21,7 +21,8 @@ setup(
         "game",
         "war",
         "programming",
-        "win"
+        "win",
+        "multiplayers"
     ],  # Keywords that define your package best
     install_requires=requirements,
     classifiers=[
