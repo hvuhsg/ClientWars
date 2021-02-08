@@ -2,10 +2,10 @@ from typing import List, Callable, Union, Tuple
 from loguru import logger
 from time import sleep
 
-from client import Client
-from map import Map
-from tile import Tile
-from websocket_updater import MapUpdater
+from .client import Client
+from .map import Map
+from .tile import Tile
+from .websocket_updater import MapUpdater
 
 
 TileList = List[Tile]

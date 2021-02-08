@@ -2,7 +2,7 @@ from typing import Union
 from dataclasses import dataclass
 from datetime import datetime
 
-from config import NEW_POWER_RATE
+from .config import NEW_POWER_RATE
 
 
 @dataclass(frozen=True)

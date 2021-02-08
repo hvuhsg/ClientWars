@@ -4,8 +4,8 @@ from time import sleep
 from json import loads
 from loguru import logger
 
-from tile import Tile
-from config import GAME_HOST
+from .tile import Tile
+from .config import GAME_HOST
 
 
 class MapUpdater(Thread):

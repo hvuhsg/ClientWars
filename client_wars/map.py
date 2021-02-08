@@ -1,10 +1,10 @@
 from typing import Dict, List, Tuple, Union
 from loguru import logger
 
-from client import Client
-from tile import Tile
-from player import Player
-from config import CHUNK_SIZE
+from .client import Client
+from .tile import Tile
+from .player import Player
+from .config import CHUNK_SIZE
 
 
 class Map:

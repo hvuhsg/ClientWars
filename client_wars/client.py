@@ -2,7 +2,8 @@ from functools import wraps
 from requests import Session, Response, ConnectionError
 from loguru import logger
 from time import sleep
-from config import GAME_HOST
+
+from .config import GAME_HOST
 
 
 GAME_HOST = "https://" + GAME_HOST
