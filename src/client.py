@@ -5,10 +5,6 @@ from time import sleep
 from config import GAME_HOST
 
 
-
-
-
-
 GAME_HOST = "https://" + GAME_HOST
 
 

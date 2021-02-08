@@ -7,6 +7,7 @@ from loguru import logger
 from tile import Tile
 from config import GAME_HOST
 
+
 class MapUpdater(Thread):
     def __init__(self, token, map, client_id):
         super().__init__()
