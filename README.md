@@ -7,12 +7,12 @@ Python Library for playing in ServerWars Game.
 
 ### Install
 ```shell script
-pip3 install -U clients_wars
+pip3 install -U ClientWars
 ```
 
 ### Example code:
 ```python
-from game import Game
+from ClientWars import Game
 
 game = Game("<TOKEN>")
 
