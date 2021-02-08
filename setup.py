@@ -8,7 +8,7 @@ setup(
     name="ClientWars",
     packages=["client_wars"],
     include_package_data=True,
-    version="v1.0",
+    version="v1.1",
     license="MIT",
     description="War game, but for programmers.",
     long_description=long_description,
