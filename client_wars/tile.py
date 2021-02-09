@@ -1,6 +1,6 @@
 from typing import Union
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .config import NEW_POWER_RATE
 
@@ -20,7 +20,8 @@ class Tile:
     def power(self):
         if self.owner is None:
             return self._power
-        return self._power + (datetime.now() - self._updated_at) // NEW_POWER_RATE
+        new_power = (datetime.now(tz=timezone.utc) - self._updated_at) // NEW_POWER_RATE
+        return self._power + new_power
 
     def coordinates(self) -> str:
         return self.x, self.y
@@ -56,7 +57,8 @@ class Tile:
     def from_dict(cls, dictt):
         dictt["_power"] = dictt["power"]
         if "updated_at" in dictt:
-            dictt["_updated_at"] = datetime.fromtimestamp(dictt["updated_at"])
+            if dictt["updated_at"] is not None:
+                dictt["_updated_at"] = datetime.fromisoformat(dictt["updated_at"]).replace(tzinfo=timezone.utc)
             dictt.pop("updated_at")
         dictt.pop("power")
         return cls(**dictt)
