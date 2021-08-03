@@ -2,6 +2,8 @@
 
 #### War game, but for programmers.
 
+#### [register now](https://game.qwhale.ml)
+
 
 Python Library for playing in ServerWars Game.
 
